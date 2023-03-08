@@ -1,6 +1,7 @@
 use std::{error::Error, io::stdin};
 
-fn main() -> Result<(), Box<dyn Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn Error>> {
     let client = reqwest::Client::new();
 
     let mut username = String::new();
@@ -21,13 +22,20 @@ fn main() -> Result<(), Box<dyn Error>> {
     stdin()
         .read_line(&mut ign)
         .expect("I didn't get that sorry");
+        
+    let args = [(String::from("User"), username), (String::from("HWID"), hwid), (String::from("IGN"), ign)];
 
-    let res = client
+    let request = client
         .post("http://127.0.0.1:7878")
-        .body(format!("Username : {username}, hwid : {hwid}, ign : {ign}"))
-        .send();
+        .form(&args);
+        
+    println!("Request: {:?}", request);
+    
+    let res = request
+        .send()
+        .await?;
 
-    // let request = format!("POST /post HTTP/1.1\r\nContent-Length: {length}\r\n\r\n{content}");
+    println!("Response: {:?}", res);
 
     Ok(())
 }
