@@ -2,34 +2,15 @@ use std::{error::Error, io::stdin};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let client = reqwest::Client::new();
+    let username = read_line("What is your slug username?: ");
+    let hwid = read_line("What is your hwid?: ");
+    let ign = read_line("what is your ign?: ");
 
-    let mut username = String::new();
-    let mut hwid = String::new();
-    let mut ign = String::new();
-
-    println!("What is your slug username?: ");
-    stdin()
-        .read_line(&mut username)
-        .expect("I didn't get that sorry");
-
-    println!("What is your hwid?: ");
-    stdin()
-        .read_line(&mut hwid)
-        .expect("I didn't get that sorry");
-
-    println!("what is your ign?: ");
-    stdin()
-        .read_line(&mut ign)
-        .expect("I didn't get that sorry");
+    let request = reqwest::Client::new()
+        .post("http://127.0.0.1:7878") // Loopback address until I set up an actual web-server
+        .body(format!("User {}\nHWID {}\nIGN {}", &username, &hwid, &ign));
         
-    let args = [(String::from("User"), username), (String::from("HWID"), hwid), (String::from("IGN"), ign)];
-
-    let request = client
-        .post("http://127.0.0.1:7878")
-        .form(&args);
-        
-    println!("Request: {:?}", request);
+    println!("Request: {:?}", &request);
     
     let res = request
         .send()
@@ -38,4 +19,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
     println!("Response: {:?}", res);
 
     Ok(())
+}
+
+fn read_line(prompt: &str) -> String {
+    let std = stdin();
+    let mut buffer = String::new();
+    
+    loop {
+        println!("{prompt}");
+        match std.read_line(&mut buffer) {
+            Ok(_) => return buffer,
+            Err(_) => println!("I didn't get that sorry")
+        }
+    }
 }
