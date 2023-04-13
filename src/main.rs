@@ -2,7 +2,7 @@ use std::{error::Error, io::stdin};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
-    let username = read_line("What is your slug username?: ");
+    let username = read_line("What is your username?: ");
     let hwid = read_line("What is your hwid?: ");
     let ign = read_line("what is your ign?: ");
 
