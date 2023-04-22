@@ -7,15 +7,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let res = reqwest::Client::new()
         .post("http://127.0.0.1:7878") // Loopback address until I set up an actual web-server
-<<<<<<< Updated upstream
         .body(format!("User {}\nHWID {}\nIGN {}", &username, get_hwid(), &ign))
-=======
-        .body(format!("User {}\nHWID {}\nIGN {}", &username, &get_hwid(), &ign));
-        
-    println!("Request: {:?}", &request);
-    
-    let res = request
->>>>>>> Stashed changes
         .send()
         .await?;
         
@@ -37,7 +29,6 @@ fn read_line(prompt: &str) -> String {
     }
 }
 
-<<<<<<< Updated upstream
 fn get_var(name: &str) -> String {
     match var(name) {
         Ok(str) => str,
@@ -47,8 +38,4 @@ fn get_var(name: &str) -> String {
 
 fn get_hwid() -> String {
     get_var("os.name")
-=======
-fn get_hwid() -> String {
-    "".to_string()
->>>>>>> Stashed changes
 }
