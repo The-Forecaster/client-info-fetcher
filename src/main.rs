@@ -32,7 +32,7 @@ fn read_line(prompt: &str) -> String {
 fn get_var(name: &str) -> String {
     match var(name) {
         Ok(str) => str,
-        Err(_) => "".to_string()
+        Err(_) => String::from("")
     }
 }
 
