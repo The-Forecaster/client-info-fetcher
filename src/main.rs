@@ -7,7 +7,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     let res = reqwest::Client::new()
         .post("http://127.0.0.1:7878") // Loopback address until I set up an actual web-server
-        .body(format!("User {}\nHWID {}\nIGN {}", &username, get_hwid(), &ign))
+        .body(format!("User {}\nHWID {}\nIGN {}", username, get_hwid(), ign))
         .send()
         .await?;
         
